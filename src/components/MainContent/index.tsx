@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 
 interface MainContentProps {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 export const MainContent = ({ children }: MainContentProps) => {

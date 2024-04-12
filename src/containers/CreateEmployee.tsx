@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import {} from "../components";
+import { PrivateLayout } from "../components";
 import {
   Box,
   Card,
@@ -11,40 +11,51 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import { MakeApiCallProps } from "../services";
+import { MakeApiCallProps, makeApiCall } from "../services";
 import { EBaseURLs, EHttpMethods } from "../services/axios";
-import { CURRENT_USER, endpoints, messages } from "../constants";
-import { ILogin, ILoginError } from "../types";
+import { endpoints, messages } from "../constants";
+import { LoadingButton } from "@mui/lab";
+import { CreateAccount, CreateAccountError } from "../types";
 import { useDispatch } from "react-redux";
-import { login } from "../redux/actions";
 import { AppDispatch, RequestStatus, useAppSelector } from "../redux/store";
-import Cookies from "js-cookie";
+import { createAccount } from "../redux/actions";
 import { toast } from "react-toastify";
 
-const defaultValues: ILogin = {
-  // email: "",
-  // password: "",
-  email: "admin@gmail.com",
+const defaultValues: CreateAccount = {
+  firstName: "test",
+  lastName: "admin",
+  email: "test@gmail.com",
+  phoneNumber: "7015720216",
   password: "Pass@123",
+  // firstName: "",
+  // lastName: "",
+  // email: "",
+  // phoneNumber: "",
+  // password: "",
 };
 
-const defaultErrors: ILogin = {
+const defaultErrors: CreateAccountError = {
+  firstName: "",
+  lastName: "",
   email: "",
+  phoneNumber: "",
   password: "",
 };
 
-const errorMessages: ILoginError = {
+const errorMessages: CreateAccountError = {
+  firstName: "Please enter the first name",
+  lastName: "Please enter the last name",
   email: "Please enter the valid email",
+  phoneNumber: "Please enter the phone number",
   password: "Please enter the valid password",
 };
 
-export const Login = () => {
+export const CreateEmployee = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isAuthenticating } = useAppSelector((state) => state.authReducer);
-  const [formData, setFormData] = useState<ILogin>(defaultValues);
-  const [errors, setErrors] = useState<ILoginError>(defaultErrors);
-  const [asAdministrator, setAsAdministrator] = useState<boolean>(!false);
+  const { loading, error } = useAppSelector((state) => state.accountReducer);
+  const [formData, setFormData] = useState<CreateAccount>(defaultValues);
+  const [errors, setErrors] = useState<CreateAccountError>(defaultErrors);
+  const [asAdministrator, setAsAdministrator] = useState<boolean>(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, id } = e.target;
@@ -55,7 +66,7 @@ export const Login = () => {
     if (value === "") {
       setErrors((prev) => ({
         ...prev,
-        [id]: errorMessages[id as keyof ILoginError],
+        [id]: errorMessages[id as keyof CreateAccountError],
       }));
     } else {
       setErrors((prev) => ({
@@ -66,13 +77,13 @@ export const Login = () => {
   };
 
   const isFormDataValid = (): boolean => {
-    const newErrors: ILoginError = { ...defaultErrors };
+    const newErrors: CreateAccountError = { ...defaultErrors };
     const isValid = Object.keys(formData).every((e: string) => {
-      if (formData[e as keyof ILogin] !== "") {
+      if (formData[e as keyof CreateAccount] !== "") {
         return true;
       } else {
-        newErrors[e as keyof ILoginError] =
-          errorMessages[e as keyof ILoginError];
+        newErrors[e as keyof CreateAccountError] =
+          errorMessages[e as keyof CreateAccountError];
       }
     });
     setErrors(newErrors);
@@ -84,18 +95,20 @@ export const Login = () => {
     console.log(formData);
     if (isFormDataValid()) {
       try {
-        const callProps: MakeApiCallProps<ILogin> = {
-          endpoint: endpoints.login,
+        const callProps: MakeApiCallProps<CreateAccount> = {
+          endpoint: endpoints.createAccount,
           payload: formData,
           method: EHttpMethods.POST,
           baseURL: asAdministrator
-            ? EBaseURLs.ADMINISTRATOR_AUTH
-            : EBaseURLs.EMPLOYEE_AUTH,
+            ? EBaseURLs.ADMINISTRATOR
+            : EBaseURLs.EMPLOYEE,
         };
-        const res = await dispatch(login(callProps));
+
+        const res = await dispatch(createAccount(callProps));
         if (res.meta.requestStatus === RequestStatus.FULFILLED) {
-          toast.success(messages.loginSuccess);
-          Cookies.set(CURRENT_USER, JSON.stringify(res.payload));
+          toast.success(messages.accountCreated);
+          setFormData(defaultValues);
+          setErrors(defaultErrors);
         } else {
           toast.error(res.payload);
         }
@@ -106,13 +119,7 @@ export const Login = () => {
   };
 
   return (
-    <Box
-      height="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      style={{ background: "#eee" }}
-    >
+    <PrivateLayout>
       <Card
         sx={{
           width: 400,
@@ -120,11 +127,13 @@ export const Login = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          margin: "0 auto",
+          padding: 4,
         }}
       >
-        <CardContent>
+        <CardContent style={{ width: "100%" }}>
           <Typography variant="h6" align="center">
-            Login
+            Create New {asAdministrator ? "Administrator" : "Employee"}
           </Typography>
           <Divider />
           <Box height={24} />
@@ -134,9 +143,26 @@ export const Login = () => {
               flexDirection: "column",
               justifyContent: "center",
               gap: 5,
+              width: "100%",
             }}
             onSubmit={handleSubmit}
           >
+            <TextField
+              id="firstName"
+              label="First Name"
+              variant="standard"
+              value={formData.firstName}
+              helperText={errors.firstName}
+              onChange={handleChange}
+            />
+            <TextField
+              id="lastName"
+              label="Last Name"
+              variant="standard"
+              value={formData.lastName}
+              helperText={errors.lastName}
+              onChange={handleChange}
+            />
             <TextField
               id="email"
               label="Email"
@@ -144,6 +170,14 @@ export const Login = () => {
               variant="standard"
               value={formData.email}
               helperText={errors.email}
+              onChange={handleChange}
+            />
+            <TextField
+              id="phoneNumber"
+              label="Phone Number"
+              variant="standard"
+              value={formData.phoneNumber}
+              helperText={errors.phoneNumber}
               onChange={handleChange}
             />
             <TextField
@@ -164,7 +198,7 @@ export const Login = () => {
                     onChange={(e) => setAsAdministrator(e.target.checked)}
                   />
                 }
-                label="As Administrator"
+                label="Administrator ?"
               />
             </FormGroup>
             <Box
@@ -177,16 +211,16 @@ export const Login = () => {
             >
               <LoadingButton
                 type="submit"
-                loading={isAuthenticating}
+                loading={loading}
                 variant="contained"
                 size="small"
               >
-                Login
+                Create
               </LoadingButton>
             </Box>
           </form>
         </CardContent>
       </Card>
-    </Box>
+    </PrivateLayout>
   );
 };

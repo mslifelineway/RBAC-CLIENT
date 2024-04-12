@@ -12,6 +12,7 @@ import { StyledDrawer, StyledDrawerHeader } from "./styled";
 import { IconButton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import List from "@mui/material/List";
+import { Link } from "react-router-dom";
 
 interface DrawerProps {
   open: boolean;
@@ -35,26 +36,28 @@ export const Drawer = (props: DrawerProps) => {
       </StyledDrawerHeader>
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        {["employees", "Starred", "Send email", "Drafts"].map((text, index) => (
           <ListItem key={text} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+            <Link to={`/${text}`}>
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
                 }}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </Link>
           </ListItem>
         ))}
       </List>

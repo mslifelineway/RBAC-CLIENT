@@ -1,6 +1,6 @@
 import { styled, Theme, CSSObject } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
-import { drawerWidth } from "../../../constants";
+import { drawerWidth } from "../../constants";
 
 export const StyledDrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",

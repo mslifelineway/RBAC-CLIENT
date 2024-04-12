@@ -1,6 +1,6 @@
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled } from "@mui/material/styles";
-import { drawerWidth } from "../../../constants";
+import { drawerWidth } from "../../constants";
 
 interface StyledAppBarProps extends MuiAppBarProps {
   open?: boolean;

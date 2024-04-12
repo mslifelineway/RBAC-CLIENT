@@ -1,8 +1,9 @@
 import React from "react";
-import { IconButton, Toolbar, Typography } from "@mui/material";
+import { Box, IconButton, Toolbar, Typography } from "@mui/material";
 import { StyledAppBar } from "./styled";
 
 import { Menu } from "@mui/icons-material";
+import { AccountDropdown } from "../AccountDropdown";
 
 interface AppBarProps {
   handleDrawerOpen: () => void;
@@ -29,6 +30,8 @@ export const AppBar = (props: AppBarProps) => {
         <Typography variant="h6" noWrap component="div">
           Mini variant drawer
         </Typography>
+        <Box flexGrow={1} />
+        <AccountDropdown />
       </Toolbar>
     </StyledAppBar>
   );

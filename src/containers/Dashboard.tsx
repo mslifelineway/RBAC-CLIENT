@@ -1,5 +1,6 @@
 import React from "react";
+import { PrivateLayout } from "../components";
 
 export const Dashboard = () => {
-  return <div>Dashboard</div>;
+  return <PrivateLayout>Dashboard</PrivateLayout>;
 };
