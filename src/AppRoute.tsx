@@ -41,7 +41,9 @@ const AppRoute = () => {
             <Route key={index} path={route.path} element={route.element} />
           ))}
         </Route>
-        <Route path={paths.all} element={<Page404 />} />
+        <Route path={paths.root} element={<PublicRoute />}>
+          <Route path={paths.all} element={<Page404 />} />
+        </Route>
       </Routes>
     </Router>
   );

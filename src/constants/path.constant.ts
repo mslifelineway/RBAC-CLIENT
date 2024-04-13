@@ -4,5 +4,11 @@ export const paths = {
   dashboard: "/dashboard",
   employees: "/employees",
   createEmployee: "/employees/create",
-  all: "*"
+  roles: "/roles",
+  createRole: "/roles/create",
+  assignRolesToEmployee: "/roles/assign",
+  permissions: "/permissions",
+  createPermission: "/permissions/create",
+  assignPermissionsToRole: "/permissions/assign",
+  all: "*",
 };

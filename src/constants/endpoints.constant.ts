@@ -3,4 +3,6 @@ export const endpoints = {
   logout: "/logout",
   createAccount: "/",
   getAdmins: "/",
+  roles: "/",
+  permissions: "/",
 };
