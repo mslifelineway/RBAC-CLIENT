@@ -13,9 +13,9 @@ export const PublicRoute: React.FC<PublicRouteProps> = () => {
   const { isAuthenticated } = useSelector(
     (state: RootState) => state.authReducer
   );
-  console.log(isAuthenticated, 'isAuthenticated')
+  console.log(isAuthenticated, "isAuthenticated");
   if (isAuthenticated && pathname === paths.login)
-    return <Navigate to={paths.dashboard} />;
+    return <Navigate to={paths.root} />;
 
   return <Outlet />;
 };

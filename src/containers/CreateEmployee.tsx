@@ -94,26 +94,18 @@ export const CreateEmployee = () => {
     e.preventDefault();
     console.log(formData);
     if (isFormDataValid()) {
-      try {
-        const callProps: MakeApiCallProps<CreateAccount> = {
-          endpoint: endpoints.createAccount,
-          payload: formData,
-          method: EHttpMethods.POST,
-          baseURL: asAdministrator
-            ? EBaseURLs.ADMINISTRATOR
-            : EBaseURLs.EMPLOYEE,
-        };
+      const callProps: MakeApiCallProps<CreateAccount> = {
+        endpoint: endpoints.createAccount,
+        payload: formData,
+        method: EHttpMethods.POST,
+        baseURL: asAdministrator ? EBaseURLs.ADMINISTRATOR : EBaseURLs.EMPLOYEE,
+      };
 
-        const res = await dispatch(createAccount(callProps));
-        if (res.meta.requestStatus === RequestStatus.FULFILLED) {
-          toast.success(messages.accountCreated);
-          setFormData(defaultValues);
-          setErrors(defaultErrors);
-        } else {
-          toast.error(res.payload);
-        }
-      } catch (err) {
-        console.log("error while Register", err);
+      const res = await dispatch(createAccount(callProps));
+      if (res.meta.requestStatus === RequestStatus.FULFILLED) {
+        toast.success(messages.accountCreated);
+        setFormData(defaultValues);
+        setErrors(defaultErrors);
       }
     }
   };

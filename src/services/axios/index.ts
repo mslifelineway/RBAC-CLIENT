@@ -25,7 +25,7 @@ export const getAxiosInstance = (
   const config: CreateAxiosDefaults = {
     baseURL,
     withCredentials,
-    timeout: 10000,
+    timeout: 15000,
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Credentials": true,

@@ -4,4 +4,5 @@ export const paths = {
   dashboard: "/dashboard",
   employees: "/employees",
   createEmployee: "/employees/create",
+  all: "*"
 };

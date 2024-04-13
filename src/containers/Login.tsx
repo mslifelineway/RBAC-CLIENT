@@ -83,24 +83,18 @@ export const Login = () => {
     e.preventDefault();
     console.log(formData);
     if (isFormDataValid()) {
-      try {
-        const callProps: MakeApiCallProps<ILogin> = {
-          endpoint: endpoints.login,
-          payload: formData,
-          method: EHttpMethods.POST,
-          baseURL: asAdministrator
-            ? EBaseURLs.ADMINISTRATOR_AUTH
-            : EBaseURLs.EMPLOYEE_AUTH,
-        };
-        const res = await dispatch(login(callProps));
-        if (res.meta.requestStatus === RequestStatus.FULFILLED) {
-          toast.success(messages.loginSuccess);
-          Cookies.set(CURRENT_USER, JSON.stringify(res.payload));
-        } else {
-          toast.error(res.payload);
-        }
-      } catch (err) {
-        console.log("error while Register", err);
+      const callProps: MakeApiCallProps<ILogin> = {
+        endpoint: endpoints.login,
+        payload: formData,
+        method: EHttpMethods.POST,
+        baseURL: asAdministrator
+          ? EBaseURLs.ADMINISTRATOR_AUTH
+          : EBaseURLs.EMPLOYEE_AUTH,
+      };
+      const res = await dispatch(login(callProps));
+      if (res.meta.requestStatus === RequestStatus.FULFILLED) {
+        toast.success(messages.loginSuccess);
+        Cookies.set(CURRENT_USER, JSON.stringify(res.payload));
       }
     }
   };

@@ -16,6 +16,7 @@ export interface IRole {
 
 export type IAdministrator = {
   roles: string[] | IRole[];
+  permissions: string[];
 };
 
 export type IEmployee = {
