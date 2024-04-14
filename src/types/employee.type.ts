@@ -6,7 +6,7 @@ export interface IEmployee {
   lastName: string;
   email: string;
   phoneNumber: string;
-  roles: string[] | IRole[];
+  roles: IRole[];
 }
 
 export interface ICreateEmployee {

@@ -11,7 +11,7 @@ interface PrivateLayoutProps {
 }
 
 export const PrivateLayout = ({ children }: PrivateLayoutProps) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen((prev) => !prev);

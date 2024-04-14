@@ -1,5 +1,6 @@
 import { GridColDef } from "@mui/x-data-grid";
-import { IRole } from "../../types";
+import { IPermission, IRole } from "../../types";
+import { Chip, Stack } from "@mui/material";
 
 export const getColumns = (): GridColDef<IRole>[] => {
   return [
@@ -18,7 +19,20 @@ export const getColumns = (): GridColDef<IRole>[] => {
       field: "permissions",
       headerName: "Permissions",
       flex: 1,
-      valueFormatter: (params) => (params.value ? params.value.join(",") : ""),
+      renderCell: (params) => (
+        <Stack direction="row" spacing={1}>
+          {params.value
+            ? params.value.map((p: IPermission) => (
+                <Chip
+                  size="small"
+                  label={p.name}
+                  color="primary"
+                  variant="outlined"
+                />
+              ))
+            : null}
+        </Stack>
+      ),
     },
   ];
 };

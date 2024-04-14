@@ -89,7 +89,7 @@ export const AssignPermissionsToRole = () => {
       if (currentRole)
         setFormData((prev) => ({
           ...prev,
-          permissions: currentRole.permissions as string[],
+          permissions: currentRole.permissions.map((p) => p._id),
         }));
     }
   }, [formData.roleId]);

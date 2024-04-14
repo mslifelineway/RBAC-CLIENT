@@ -80,7 +80,7 @@ export const AssignRolesToEmployee = () => {
       if (currentEmp)
         setFormData((prev) => ({
           ...prev,
-          roles: currentEmp.roles as string[],
+          roles: currentEmp.roles.map((r) => r._id),
         }));
     }
   }, [formData.employeeId]);

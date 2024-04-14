@@ -1,5 +1,6 @@
 import { GridColDef } from "@mui/x-data-grid";
-import { IEmployee } from "../../types";
+import { IEmployee, IRole } from "../../types";
+import { Chip, Stack } from "@mui/material";
 
 export const getColumns = (): GridColDef<IEmployee>[] => {
   return [
@@ -22,8 +23,21 @@ export const getColumns = (): GridColDef<IEmployee>[] => {
     {
       field: "roles",
       headerName: "Roles",
-      width: 150,
-      valueFormatter: (params) => (params.value ? params.value.join(",") : ""),
+      flex: 1,
+      renderCell: (params) => (
+        <Stack direction="row" spacing={1}>
+          {params.value
+            ? params.value.map((r: IRole) => (
+                <Chip
+                  size="small"
+                  label={r.name}
+                  color="primary"
+                  variant="outlined"
+                />
+              ))
+            : null}
+        </Stack>
+      ),
     },
   ];
 };
