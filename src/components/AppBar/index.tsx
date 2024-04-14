@@ -28,7 +28,7 @@ export const AppBar = (props: AppBarProps) => {
           <Menu />
         </IconButton>
         <Typography variant="h6" noWrap component="div">
-          Mini variant drawer
+          RBAC
         </Typography>
         <Box flexGrow={1} />
         <AccountDropdown />

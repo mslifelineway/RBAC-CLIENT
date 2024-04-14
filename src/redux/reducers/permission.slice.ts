@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchPermissions } from "../actions";
+import { createPermission, fetchPermissions } from "../actions";
 import { IPermission } from "../../types";
 
 interface InitialState {
   loading: boolean;
+  isCreating: boolean;
   error: string | null;
   data: IPermission[];
 }
 
 const initialState: InitialState = {
   loading: false,
+  isCreating: false,
   error: null,
   data: [],
 };
@@ -30,6 +32,18 @@ const permissionSlice = createSlice({
       })
       .addCase(fetchPermissions.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(createPermission.pending, (state) => {
+        state.isCreating = true;
+        state.error = null;
+      })
+      .addCase(createPermission.fulfilled, (state, action) => {
+        state.isCreating = false;
+        state.data.push(action.payload);
+      })
+      .addCase(createPermission.rejected, (state, action) => {
+        state.isCreating = false;
         state.error = action.payload as string;
       });
   },

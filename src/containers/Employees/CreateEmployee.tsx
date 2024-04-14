@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { PrivateLayout } from "../components";
+import { BackButton, PrivateLayout } from "../../components";
 import {
   Box,
   Card,
@@ -11,17 +11,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { MakeApiCallProps, makeApiCall } from "../services";
-import { EBaseURLs, EHttpMethods } from "../services/axios";
-import { endpoints, messages } from "../constants";
+import { MakeApiCallProps } from "../../services";
+import { EBaseURLs, EHttpMethods } from "../../services/axios";
+import { endpoints, messages } from "../../constants";
 import { LoadingButton } from "@mui/lab";
-import { CreateAccount, CreateAccountError } from "../types";
+import { ICreateEmployee, ICreateEmployeeError } from "../../types";
 import { useDispatch } from "react-redux";
-import { AppDispatch, RequestStatus, useAppSelector } from "../redux/store";
-import { createAccount } from "../redux/actions";
+import { AppDispatch, RequestStatus, useAppSelector } from "../../redux/store";
 import { toast } from "react-toastify";
+import { createEmployee } from "../../redux/actions";
 
-const defaultValues: CreateAccount = {
+const defaultValues: ICreateEmployee = {
   firstName: "test",
   lastName: "admin",
   email: "test@gmail.com",
@@ -34,7 +34,7 @@ const defaultValues: CreateAccount = {
   // password: "",
 };
 
-const defaultErrors: CreateAccountError = {
+const defaultErrors: ICreateEmployeeError = {
   firstName: "",
   lastName: "",
   email: "",
@@ -42,7 +42,7 @@ const defaultErrors: CreateAccountError = {
   password: "",
 };
 
-const errorMessages: CreateAccountError = {
+const errorMessages: ICreateEmployeeError = {
   firstName: "Please enter the first name",
   lastName: "Please enter the last name",
   email: "Please enter the valid email",
@@ -52,9 +52,9 @@ const errorMessages: CreateAccountError = {
 
 export const CreateEmployee = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error } = useAppSelector((state) => state.accountReducer);
-  const [formData, setFormData] = useState<CreateAccount>(defaultValues);
-  const [errors, setErrors] = useState<CreateAccountError>(defaultErrors);
+  const { isCreating } = useAppSelector((state) => state.employeeReducer);
+  const [formData, setFormData] = useState<ICreateEmployee>(defaultValues);
+  const [errors, setErrors] = useState<ICreateEmployeeError>(defaultErrors);
   const [asAdministrator, setAsAdministrator] = useState<boolean>(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +66,7 @@ export const CreateEmployee = () => {
     if (value === "") {
       setErrors((prev) => ({
         ...prev,
-        [id]: errorMessages[id as keyof CreateAccountError],
+        [id]: errorMessages[id as keyof ICreateEmployeeError],
       }));
     } else {
       setErrors((prev) => ({
@@ -77,13 +77,13 @@ export const CreateEmployee = () => {
   };
 
   const isFormDataValid = (): boolean => {
-    const newErrors: CreateAccountError = { ...defaultErrors };
+    const newErrors: ICreateEmployeeError = { ...defaultErrors };
     const isValid = Object.keys(formData).every((e: string) => {
-      if (formData[e as keyof CreateAccount] !== "") {
+      if (formData[e as keyof ICreateEmployee] !== "") {
         return true;
       } else {
-        newErrors[e as keyof CreateAccountError] =
-          errorMessages[e as keyof CreateAccountError];
+        newErrors[e as keyof ICreateEmployeeError] =
+          errorMessages[e as keyof ICreateEmployeeError];
       }
     });
     setErrors(newErrors);
@@ -94,14 +94,14 @@ export const CreateEmployee = () => {
     e.preventDefault();
     console.log(formData);
     if (isFormDataValid()) {
-      const callProps: MakeApiCallProps<CreateAccount> = {
-        endpoint: endpoints.createAccount,
+      const callProps: MakeApiCallProps<ICreateEmployee> = {
+        endpoint: endpoints.root,
         payload: formData,
         method: EHttpMethods.POST,
         baseURL: asAdministrator ? EBaseURLs.ADMINISTRATOR : EBaseURLs.EMPLOYEE,
       };
 
-      const res = await dispatch(createAccount(callProps));
+      const res = await dispatch(createEmployee(callProps));
       if (res.meta.requestStatus === RequestStatus.FULFILLED) {
         toast.success(messages.accountCreated);
         setFormData(defaultValues);
@@ -199,11 +199,13 @@ export const CreateEmployee = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                gap: 2,
               }}
             >
+              <BackButton text="Cancel" />
               <LoadingButton
                 type="submit"
-                loading={loading}
+                loading={isCreating}
                 variant="contained"
                 size="small"
               >

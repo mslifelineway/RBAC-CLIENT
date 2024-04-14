@@ -4,5 +4,14 @@ export interface IRole {
   _id: string;
   name: string;
   description: string;
-  permissions: IPermission[];
+  permissions: IPermission[] | string[];
+}
+
+export interface ICreateRole {
+  name: string;
+  description: string;
+}
+export interface ICreateRoleError {
+  name: string;
+  description: string;
 }

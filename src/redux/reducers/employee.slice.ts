@@ -1,70 +1,70 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { assignPermissions, createRole, fetchRoles } from "../actions";
-import { IRole } from "../../types";
+import { assignRoles, createEmployee, fetchEmployees } from "../actions";
+import { IEmployee, IRole } from "../../types";
 
 interface InitialState {
   loading: boolean;
   isCreating: boolean;
-  isPermissionAssigning: boolean;
+  isRoleAssigning: boolean;
   error: string | null;
-  data: IRole[];
+  data: IEmployee[];
 }
 
 const initialState: InitialState = {
   loading: false,
   isCreating: false,
-  isPermissionAssigning: false,
+  isRoleAssigning: false,
   error: null,
   data: [],
 };
 
-const roleSlice = createSlice({
-  name: "roleSlice",
+const employeeSlice = createSlice({
+  name: "employeeSlice",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchRoles.pending, (state) => {
+      .addCase(fetchEmployees.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchRoles.fulfilled, (state, action) => {
+      .addCase(fetchEmployees.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
       })
-      .addCase(fetchRoles.rejected, (state, action) => {
+      .addCase(fetchEmployees.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(createRole.pending, (state) => {
+      .addCase(createEmployee.pending, (state) => {
         state.isCreating = true;
         state.error = null;
       })
-      .addCase(createRole.fulfilled, (state, action) => {
+      .addCase(createEmployee.fulfilled, (state, action) => {
         state.isCreating = false;
         state.data.push(action.payload);
       })
-      .addCase(createRole.rejected, (state, action) => {
+      .addCase(createEmployee.rejected, (state, action) => {
         state.isCreating = false;
         state.error = action.payload as string;
       })
-      .addCase(assignPermissions.pending, (state) => {
-        state.isPermissionAssigning = true;
+      .addCase(assignRoles.pending, (state) => {
+        state.isRoleAssigning = true;
         state.error = null;
       })
-      .addCase(assignPermissions.fulfilled, (state, action) => {
-        state.isPermissionAssigning = false;
+      .addCase(assignRoles.fulfilled, (state, action) => {
+        state.isRoleAssigning = false;
         const data = state.data.find((e) => e._id === action.payload._id);
         if (data) {
-          data.permissions = action.payload.permissions;
+          data.roles = action.payload.roles;
         }
       })
-      .addCase(assignPermissions.rejected, (state, action) => {
-        state.isPermissionAssigning = false;
+      .addCase(assignRoles.rejected, (state, action) => {
+        state.isRoleAssigning = false;
         state.error = action.payload as string;
       });
   },
 });
 
-export const {} = roleSlice.actions;
-export default roleSlice.reducer;
+export const {} = employeeSlice.actions;
+export default employeeSlice.reducer;
