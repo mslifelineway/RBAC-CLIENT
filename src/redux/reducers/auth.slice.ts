@@ -15,16 +15,26 @@ export interface IRole {
 }
 
 export type IAdministrator = {
+  _id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
   roles: string[] | IRole[];
   permissions: string[];
 };
 
 export type IEmployee = {
+  _id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
   roles: string[];
   permissions: string[];
 };
 
-interface InitialState {
+export interface InitialState {
   isAuthenticating: boolean;
   isAuthenticated: boolean;
   error: string | null;
@@ -41,7 +51,11 @@ const initialState: InitialState = {
 const authSlice = createSlice({
   name: "authSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setLoginTestData(state, action) {
+      state.data = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -73,5 +87,5 @@ const authSlice = createSlice({
   },
 });
 
-export const {} = authSlice.actions;
+export const { setLoginTestData } = authSlice.actions;
 export default authSlice.reducer;

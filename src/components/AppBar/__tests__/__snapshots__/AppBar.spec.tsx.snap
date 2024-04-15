@@ -8,7 +8,7 @@ Array [
     onMouseLeave={[Function]}
   />,
   <header
-    className="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorPrimary MuiAppBar-positionFixed mui-fixed css-19z1ozs-MuiPaper-root-MuiAppBar-root"
+    className="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorPrimary MuiAppBar-positionFixed mui-fixed css-otxe5w-MuiPaper-root-MuiAppBar-root"
   >
     <div
       className="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-hyum1k-MuiToolbar-root"
@@ -173,7 +173,7 @@ Array [
     onMouseLeave={[Function]}
   />,
   <header
-    className="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorPrimary MuiAppBar-positionFixed mui-fixed css-1191obr-MuiPaper-root-MuiAppBar-root"
+    className="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorPrimary MuiAppBar-positionFixed mui-fixed css-169pbdt-MuiPaper-root-MuiAppBar-root"
   >
     <div
       className="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-hyum1k-MuiToolbar-root"

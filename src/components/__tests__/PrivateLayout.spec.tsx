@@ -2,6 +2,7 @@ import { create } from "react-test-renderer";
 import { PrivateLayout } from "../PrivateLayout";
 import { Provider } from "react-redux";
 import { store } from "../../redux/store";
+import { BrowserRouter as Router } from "react-router-dom";
 
 jest.mock("react-router-dom", () => {
   const original = jest.requireActual("react-router-dom");
@@ -27,9 +28,11 @@ describe("PrivateLayout Component", () => {
   test("renders correctly with children", () => {
     const component = create(
       <Provider store={store}>
-        <PrivateLayout>
-          <div>Child Component</div>
-        </PrivateLayout>
+        <Router>
+          <PrivateLayout>
+            <div>Child Component</div>
+          </PrivateLayout>
+        </Router>
       </Provider>
     );
     expect(component.toJSON).toMatchSnapshot();

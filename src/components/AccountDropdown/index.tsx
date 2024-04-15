@@ -44,7 +44,7 @@ export const AccountDropdown = () => {
   let roles = "";
   currentUser?.roles?.forEach((c: IRole | string) => {
     if (roles === "") roles += typeof c === "string" ? c : c.name;
-    else roles += `, ${typeof c === "string" ? c : c.name}`;
+    else roles += `,${typeof c === "string" ? c : c.name}`;
   });
 
   // const roles = (currentUser?.roles || []).reduce((acc: string, c: IRole | string) => {
@@ -62,7 +62,12 @@ export const AccountDropdown = () => {
       </MenuButton>
       <Menu slots={{ listbox: AnimatedListbox }}>
         {currentUser?.roles?.length! > 0 ? (
-          <p style={{ fontStyle: "italic", textAlign: "center" }}>({roles})</p>
+          <p
+            style={{ fontStyle: "italic", textAlign: "center" }}
+            data-testid="roles"
+          >
+            {`(${roles})`}
+          </p>
         ) : null}
         <MenuItem onClick={createHandleMenuClick("Profile")}>Profile</MenuItem>
         <MenuItem onClick={createHandleMenuClick("Language settings")}>
