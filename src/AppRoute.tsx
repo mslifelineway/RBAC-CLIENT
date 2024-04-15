@@ -10,8 +10,9 @@ const AppRoute = () => {
   const { data } = useAppSelector((state) => state.authReducer);
   const [routePaths, setRoutePaths] = useState<string[]>([]);
 
-  const hasAllPermissions =
-    typeof data?.roles[0] === "string" && data?.roles[0] === "ADMINISTRATOR";
+  // const hasAllPermissions =
+  //   typeof data?.roles[0] === "string" && data?.roles[0] === "ADMINISTRATOR";
+  const hasAllPermissions = true;
 
   useEffect(() => {
     if (hasAllPermissions) {
@@ -30,20 +31,20 @@ const AppRoute = () => {
   return (
     <Router>
       <Routes>
-        <Route path={paths.login} element={<PublicRoute />}>
+        {/* <Route path={paths.login} element={<PublicRoute />}> */}
           <Route path={paths.login} element={<Login />} />
-        </Route>
+        {/* </Route> */}
 
         {/* Protected Routes */}
-        <Route path={paths.root} element={<ProtectedRoute />}>
+        {/* <Route path={paths.root} element={<ProtectedRoute />}> */}
           <Route path={paths.root} element={<Welcome />} />
           {getRoutesByPaths(routePaths).map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
-        </Route>
-        <Route path={paths.root} element={<PublicRoute />}>
+        {/* </Route> */}
+        {/* <Route path={paths.root} element={<PublicRoute />}> */}
           <Route path={paths.all} element={<Page404 />} />
-        </Route>
+        {/* </Route> */}
       </Routes>
     </Router>
   );

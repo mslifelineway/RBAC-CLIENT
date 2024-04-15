@@ -9,18 +9,20 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Divider from "@mui/material/Divider";
 import { StyledDrawer, StyledDrawerHeader } from "./styled";
-import { IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import List from "@mui/material/List";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Dashboard,
   GradientOutlined,
   Home,
+  Logout,
   PeopleAltTwoTone,
   SecurityOutlined,
 } from "@mui/icons-material";
 import { paths } from "../../constants";
+import { ButtonWithIcon } from "../ButtonWithIcon";
 
 interface DrawerProps {
   open: boolean;
@@ -73,6 +75,7 @@ const menus: MenuLink[] = [
 export const Drawer = (props: DrawerProps) => {
   const { open, handleDrawerClose } = props;
   const theme = useTheme();
+  const { pathname } = useLocation();
 
   return (
     <StyledDrawer variant="permanent" open={open}>
@@ -89,49 +92,44 @@ export const Drawer = (props: DrawerProps) => {
       <List>
         {menus.map((menu: MenuLink) => (
           <ListItem key={menu.text} disablePadding sx={{ display: "block" }}>
-            <Link to={menu.link}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                {menu.icon}
-                <ListItemText
-                  primary={menu.text}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </Link>
+            <ButtonWithIcon
+              to={menu.link}
+              startIcon={menu.icon}
+              text={open ? menu.text : undefined}
+              fullWidth
+              className={pathname === menu.link ? "active-bg" : ""}
+              disableElevation
+              style={{
+                justifyContent: "start",
+                margin: 0,
+                paddingLeft: 24,
+                fontSize: 14,
+                height: 32,
+                borderRadius: 0,
+              }}
+            />
           </ListItem>
         ))}
       </List>
+      <Box height="80%" />
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ButtonWithIcon
+          startIcon={<Logout />}
+          text={open ? "Log Out" : undefined}
+          fullWidth
+          disableElevation
+          style={{
+            justifyContent: "start",
+            margin: 0,
+            paddingLeft: 24,
+            fontSize: 14,
+            height: 32,
+            borderRadius: 0,
+          }}
+        />
       </List>
+      <Box height={"80%"} />
     </StyledDrawer>
   );
 };

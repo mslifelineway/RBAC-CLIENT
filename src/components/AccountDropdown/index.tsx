@@ -9,7 +9,7 @@ import { CURRENT_USER, endpoints } from "../../constants";
 import { EBaseURLs, EHttpMethods } from "../../services/axios";
 import { logout } from "../../redux/actions";
 import Cookies from "js-cookie";
-import { IAdministrator, IRole } from "../../redux/reducers/auth.slice";
+import { IRole } from "../../redux/reducers/auth.slice";
 
 export const AccountDropdown = () => {
   const dispatch = useDispatch<AppDispatch>();
