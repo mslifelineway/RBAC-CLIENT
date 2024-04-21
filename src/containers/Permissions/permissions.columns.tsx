@@ -10,6 +10,11 @@ export const getColumns = (): GridColDef<IPermission>[] => {
       width: 250,
     },
     {
+      field: "permissionUniqueKey",
+      headerName: "Permission Unique Key",
+      width: 250,
+    },
+    {
       field: "description",
       headerName: "Description",
       width: 250,

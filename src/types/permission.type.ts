@@ -1,6 +1,7 @@
 export interface IPermission {
   _id: string;
   name: string;
+  permissionUniqueKey: string;
   description: string;
 }
 

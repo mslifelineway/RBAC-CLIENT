@@ -4,6 +4,7 @@ import { login, logout } from "../actions";
 export interface IPermission {
   _id: string;
   name: string;
+  permissionUniqueKey: string;
   description: string;
 }
 
@@ -21,7 +22,7 @@ export type IAdministrator = {
   lastName: string;
   phoneNumber: string;
   roles: string[] | IRole[];
-  permissions: string[];
+  permissionUniqueKeys: string[];
 };
 
 export type IEmployee = {
@@ -31,7 +32,7 @@ export type IEmployee = {
   lastName: string;
   phoneNumber: string;
   roles: string[];
-  permissions: string[];
+  permissionUniqueKeys: string[];
 };
 
 export interface InitialState {

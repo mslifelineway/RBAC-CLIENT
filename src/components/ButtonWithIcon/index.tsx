@@ -16,13 +16,19 @@ export const ButtonWithIcon = (
     const { to, ...buttonProps } = props as LinkButtonWithIconProps;
 
     return (
-      <Link to={to} style={{ textDecoration: "none" }}>
+      <Link
+        to={to}
+        style={{ textDecoration: "none" }}
+        data-testid="linkButtonWithIcon"
+      >
         <StyledButton {...buttonProps}>{props.text}</StyledButton>
       </Link>
     );
   } else {
     return (
-      <StyledButton {...(props as ButtonProps)}>{props.text}</StyledButton>
+      <StyledButton {...(props as ButtonProps)} data-testid="buttonWithIcon">
+        {props.text}
+      </StyledButton>
     );
   }
 };

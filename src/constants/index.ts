@@ -4,3 +4,4 @@ export * from "./endpoints.constant";
 export * from "./current-session.constant";
 export * from "./toast.constant";
 export * from "./message.constant";
+export * from "./permission-keys.constant";

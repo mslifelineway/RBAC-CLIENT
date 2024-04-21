@@ -5,13 +5,15 @@ import { Button, Card, CardContent, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { fetchRoles } from "../../redux/actions";
 import { MakeApiCallProps } from "../../services";
-import { endpoints, paths } from "../../constants";
+import { endpoints, paths, permissionKeys } from "../../constants";
 import { EBaseURLs, EHttpMethods } from "../../services/axios";
 import { Link } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { getColumns } from "./roles.columns";
+import { usePermissionCheck } from "../../hooks";
 
 export const Roles = () => {
+  const { hasPermission } = usePermissionCheck();
   const dispatch = useDispatch<AppDispatch>();
   const { data } = useAppSelector((state) => state.roleReducer);
 
@@ -34,11 +36,13 @@ export const Roles = () => {
           style={{ display: "flex", justifyContent: "space-between" }}
         >
           <Typography variant="h6">Roles</Typography>
-          <Link to={paths.createRole}>
-            <Button variant="contained" size="small">
-              New
-            </Button>
-          </Link>
+          {hasPermission(permissionKeys.createRole) ? (
+            <Link to={paths.createRole}>
+              <Button variant="contained" size="small">
+                New
+              </Button>
+            </Link>
+          ) : null}
         </CardContent>
       </Card>
       <DataGrid

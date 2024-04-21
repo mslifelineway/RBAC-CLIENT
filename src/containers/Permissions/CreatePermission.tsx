@@ -88,7 +88,7 @@ export const CreatePermission = () => {
 
       const res = await dispatch(createPermission(callProps));
       if (res.meta.requestStatus === RequestStatus.FULFILLED) {
-        toast.success(messages.accountCreated);
+        toast.success(messages.permissionCreated);
         setFormData(defaultValues);
         setErrors(defaultErrors);
       }

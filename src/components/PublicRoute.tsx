@@ -1,21 +1,19 @@
 import React from "react";
 import { Navigate, Outlet, RouteProps, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { useAppSelector } from "../redux/store";
 import { paths } from "../constants";
 
 type PublicRouteProps = RouteProps & {
-  element?: React.ReactNode;
+  restricted?: boolean;
 };
 
-export const PublicRoute: React.FC<PublicRouteProps> = () => {
+export const PublicRoute = ({ restricted }: PublicRouteProps) => {
   const { pathname } = useLocation();
-  const { isAuthenticated } = useSelector(
-    (state: RootState) => state.authReducer
-  );
-  console.log(isAuthenticated, "isAuthenticated");
+  const { isAuthenticated } = useAppSelector((state) => state.authReducer);
+
   if (isAuthenticated && pathname === paths.login)
     return <Navigate to={paths.root} />;
 
   return <Outlet />;
+
 };

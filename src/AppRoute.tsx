@@ -1,50 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { paths } from "./constants";
-import { Login, Page404, Welcome } from "./containers";
+import { Login, Page404 } from "./containers";
 import { ProtectedRoute, PublicRoute } from "./components";
-import { getRoutesByPaths, pathsByPermissions } from "./data";
-import { useAppSelector } from "./redux/store";
+import { protectedRoutes, publicRoutes } from "./routes.config.";
+import { PermissionWrapper } from "./components/PermissionWrapper";
 
 const AppRoute = () => {
-  const { data } = useAppSelector((state) => state.authReducer);
-  const [routePaths, setRoutePaths] = useState<string[]>([]);
-
-  // const hasAllPermissions =
-  //   typeof data?.roles[0] === "string" && data?.roles[0] === "ADMINISTRATOR";
-  const hasAllPermissions = true;
-
-  useEffect(() => {
-    if (hasAllPermissions) {
-      setRoutePaths(Object.values(pathsByPermissions));
-    } else {
-      const routesByPermissions: string[] = [];
-      data?.permissions?.forEach((p) => {
-        if (pathsByPermissions[p]) {
-          routesByPermissions.push(pathsByPermissions[p]);
-        }
-      });
-      setRoutePaths(routesByPermissions);
-    }
-  }, [data]);
-
   return (
     <Router>
       <Routes>
-        {/* <Route path={paths.login} element={<PublicRoute />}> */}
+        <Route path={paths.login} element={<PublicRoute />}>
           <Route path={paths.login} element={<Login />} />
-        {/* </Route> */}
+        </Route>
 
-        {/* Protected Routes */}
-        {/* <Route path={paths.root} element={<ProtectedRoute />}> */}
-          <Route path={paths.root} element={<Welcome />} />
-          {getRoutesByPaths(routePaths).map((route, index) => (
-            <Route key={index} path={route.path} element={route.element} />
-          ))}
-        {/* </Route> */}
-        {/* <Route path={paths.root} element={<PublicRoute />}> */}
+        {publicRoutes.map((route, index) => (
+          <Route key={index} path={route.path} element={<PublicRoute />}>
+            <Route path={route.path} element={route.element} />
+          </Route>
+        ))}
+        {protectedRoutes.map((route, index) => (
+          <Route key={index} path={route.path} element={<ProtectedRoute />}>
+            <Route
+              path={route.path}
+              element={
+                <PermissionWrapper
+                  permissionUniqueKey={route.permissionKey}
+                  disablePermissionCheck={route.disablePermissionCheck}
+                >
+                  {route.element}
+                </PermissionWrapper>
+              }
+            />
+          </Route>
+        ))}
+        <Route path={paths.root} element={<PublicRoute />}>
           <Route path={paths.all} element={<Page404 />} />
-        {/* </Route> */}
+        </Route>
       </Routes>
     </Router>
   );
